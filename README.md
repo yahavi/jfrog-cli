@@ -1,5 +1,5 @@
 <p align="center">
- <img src="https://github.com/yahavi/jfrog-cli/blob/df19bbd161d6dd93feef97066f1d0be6fcb4cc1c/GitHub%20Repos_CLI%20Banner-1.png" alt="datree=github" border="0" />
+ <img src="https://github.com/yahavi/jfrog-cli/blob/72601e8578748e7edad10b518f5271e9a8a964fc/GitHub%20Repos_CLI%20Banner%20(1).png" alt="datree=github" border="0" />
 </p>
 
 | Branch |                                                                                    Status                                                                                    |
