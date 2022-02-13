@@ -1,5 +1,5 @@
 <p align="center">
- <img src="https://github.com/yahavi/jfrog-cli/blob/803f8f3004a05f010483ca1d4a46be16a500b692/GitHub%20Repos_CLI%20Banner.png" border="0" />
+ <img style='max-width: 100%; max-height: 100%' src="https://github.com/yahavi/jfrog-cli/blob/803f8f3004a05f010483ca1d4a46be16a500b692/GitHub%20Repos_CLI%20Banner.png" border="0" />
 </p>
 
 | Branch |                                                                                    Status                                                                                    |
