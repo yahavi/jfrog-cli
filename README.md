@@ -1,3 +1,7 @@
+<p align="center">
+ <img src="https://github.com/yahavi/jfrog-cli/blob/df19bbd161d6dd93feef97066f1d0be6fcb4cc1c/GitHub%20Repos_CLI%20Banner-1.png" alt="datree=github" border="0" />
+</p>
+
 | Branch |                                                                                    Status                                                                                    |
 | :----: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 |   v2   |   [![JFrog CLI Tests](https://github.com/jfrog/jfrog-cli/actions/workflows/tests.yml/badge.svg?branch=v2)](https://github.com/jfrog/jfrog-cli/actions/workflows/tests.yml)   |
