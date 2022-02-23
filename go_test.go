@@ -225,6 +225,7 @@ func initGoTest(t *testing.T) (tempGoPath string, cleanUp func()) {
 		t.Skip("Skipping go test. To run go test add the '-test.go=true' option.")
 	}
 	clientTestUtils.SetEnvAndAssert(t, "GONOSUMDB", "github.com/jfrog")
+	clientTestUtils.SetEnvAndAssert(t, "GOPRIVATE", "github.com/jfrog/*")
 	createJfrogHomeConfig(t, true)
 	tempGoPath, cleanUpGoPath := createTempGoPath(t)
 	return tempGoPath, func() {
@@ -235,6 +236,7 @@ func initGoTest(t *testing.T) (tempGoPath string, cleanUp func()) {
 
 func cleanGoTest(t *testing.T) {
 	clientTestUtils.UnSetEnvAndAssert(t, "GONOSUMDB")
+	clientTestUtils.UnSetEnvAndAssert(t, "GOPRIVATE")
 	deleteSpec := spec.NewBuilder().Pattern(tests.GoRepo).BuildSpec()
 	_, _, err := tests.DeleteFiles(deleteSpec, serverDetails)
 	assert.NoError(t, err)
