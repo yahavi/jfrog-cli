@@ -115,7 +115,7 @@ jobs:
             
       - name: Setup Artifactory
         run: |
-          go install github.com/jfrog/jfrog-testing-infra/local-rt-setup@latest
+          go install github.com/yahavi/jfrog-testing-infra/local-rt-setup@rt-home
           ~/go/bin/local-rt-setup
         env:
           RTLIC: ${{secrets.RTLIC}}
