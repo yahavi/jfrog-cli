@@ -213,9 +213,21 @@ func useCmd(c *cli.Context) error {
 func CreateConfigCommandConfiguration(c *cli.Context) (configCommandConfiguration *commands.ConfigCommandConfiguration, err error) {
 	configCommandConfiguration = new(commands.ConfigCommandConfiguration)
 	configCommandConfiguration.ServerDetails = cliutils.CreateServerDetailsFromFlags(c)
-	configCommandConfiguration.EncPassword = c.BoolT(cliutils.EncPassword)
 	configCommandConfiguration.Interactive = cliutils.GetInteractiveValue(c)
-	configCommandConfiguration.BasicAuthOnly = c.Bool(cliutils.BasicAuthOnly)
+
+	refToken := c.String(cliutils.RefToken)
+	if refToken != "" {
+		if configCommandConfiguration.ServerDetails.User == "" {
+			configCommandConfiguration.ServerDetails.AccessToken = refToken
+		} else {
+			configCommandConfiguration.ServerDetails.Password = refToken
+		}
+		configCommandConfiguration.EncPassword = false
+		configCommandConfiguration.BasicAuthOnly = true
+	} else {
+		configCommandConfiguration.EncPassword = c.BoolT(cliutils.EncPassword)
+		configCommandConfiguration.BasicAuthOnly = c.Bool(cliutils.BasicAuthOnly)
+	}
 	return
 }
 

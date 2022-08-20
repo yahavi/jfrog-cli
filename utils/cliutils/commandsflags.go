@@ -2,10 +2,11 @@ package cliutils
 
 import (
 	"fmt"
-	"github.com/jfrog/jfrog-client-go/utils/log"
-	"github.com/urfave/cli"
 	"sort"
 	"strconv"
+
+	"github.com/jfrog/jfrog-client-go/utils/log"
+	"github.com/urfave/cli"
 )
 
 const (
@@ -125,6 +126,7 @@ const (
 	user        = "user"
 	password    = "password"
 	accessToken = "access-token"
+	RefToken    = "reference-token"
 	serverId    = "server-id"
 
 	// Ssh flags
@@ -455,6 +457,7 @@ const (
 	configAccessToken = configPrefix + accessToken
 	configUser        = configPrefix + user
 	configPassword    = configPrefix + password
+	configRefToken    = configPrefix + RefToken
 	configInsecureTls = configPrefix + InsecureTls
 
 	// *** Project Commands' flags ***
@@ -1327,11 +1330,15 @@ var flagsMap = map[string]cli.Flag{
 	},
 	configPassword: cli.StringFlag{
 		Name:  password,
-		Usage: "[Optional] JFrog Platform password or API key. ` `",
+		Usage: "[Optional] JFrog Platform password or API key. For reference tokens please use the '--reference-token' option instead. ` `",
 	},
 	configAccessToken: cli.StringFlag{
 		Name:  accessToken,
 		Usage: "[Optional] JFrog Platform access token. ` `",
+	},
+	configRefToken: cli.StringFlag{
+		Name:  RefToken,
+		Usage: "[Optional] JFrog Platform Reference token. ` `",
 	},
 	configInsecureTls: cli.StringFlag{
 		Name:  InsecureTls,
@@ -1370,11 +1377,11 @@ var flagsMap = map[string]cli.Flag{
 var commandFlags = map[string][]string{
 	AddConfig: {
 		interactive, EncPassword, configPlatformUrl, configRtUrl, configDistUrl, configXrUrl, configMcUrl, configPlUrl, configUser, configPassword, configAccessToken, sshKeyPath, sshPassphrase, ClientCertPath,
-		ClientCertKeyPath, BasicAuthOnly, configInsecureTls, Overwrite,
+		ClientCertKeyPath, BasicAuthOnly, configInsecureTls, Overwrite, configRefToken,
 	},
 	EditConfig: {
 		interactive, EncPassword, configPlatformUrl, configRtUrl, configDistUrl, configXrUrl, configMcUrl, configPlUrl, configUser, configPassword, configAccessToken, sshKeyPath, sshPassphrase, ClientCertPath,
-		ClientCertKeyPath, BasicAuthOnly, configInsecureTls,
+		ClientCertKeyPath, BasicAuthOnly, configInsecureTls, configRefToken,
 	},
 	DeleteConfig: {
 		deleteQuiet,
