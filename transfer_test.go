@@ -2,6 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"os"
+	"path/filepath"
+	"strconv"
+	"strings"
+	"sync"
+	"testing"
+	"time"
+
 	"github.com/gocarina/gocsv"
 	buildInfo "github.com/jfrog/build-info-go/entities"
 	"github.com/jfrog/jfrog-cli-core/v2/artifactory/commands/transferconfigmerge"
@@ -23,13 +31,6 @@ import (
 	"github.com/jfrog/jfrog-client-go/utils/io/httputils"
 	clientTestUtils "github.com/jfrog/jfrog-client-go/utils/tests"
 	"github.com/stretchr/testify/assert"
-	"os"
-	"path/filepath"
-	"strconv"
-	"strings"
-	"sync"
-	"testing"
-	"time"
 )
 
 var targetArtHttpDetails *httputils.HttpClientDetails
@@ -172,6 +173,40 @@ func TestTransferProperties(t *testing.T) {
 			default:
 				assert.Fail(t, "Unexpected property key "+k)
 			}
+		}
+	}
+}
+
+func TestTransferDirProperties(t *testing.T) {
+	cleanUp := initTransferTest(t)
+	defer cleanUp()
+
+	// Populate source Artifactory
+	assert.NoError(t, artifactoryCli.Exec("upload", "testdata/empty/*", tests.RtRepo1, "--include-dirs"))
+	assert.NoError(t, artifactoryCli.Exec("sp", tests.RtRepo1+"/testdata/empty", "a=b", "--include-dirs"))
+	assert.NoError(t, artifactoryCli.Exec("sp", tests.RtRepo1+"/testdata/empty/folder", "c=d", "--include-dirs"))
+
+	// Execute transfer-files
+	assert.NoError(t, artifactoryCli.WithoutCredentials().Exec("transfer-files", inttestutils.SourceServerId, inttestutils.TargetServerId, "--include-repos="+tests.RtRepo1))
+
+	// Verify directories transferred to the target instance
+	repo1Spec, err := tests.CreateSpec(tests.SearchRepo1IncludeDirs)
+	assert.NoError(t, err)
+	resultItems, err := inttestutils.SearchInArtifactory(repo1Spec, targetServerDetails, t)
+	assert.NoError(t, err)
+	assert.Len(t, resultItems, 4)
+
+	// Verify properties
+	for _, item := range resultItems {
+		switch item.Path {
+		case tests.RtRepo1 + "/", tests.RtRepo1 + "/testdata":
+			// Do nothing
+		case tests.RtRepo1 + "/testdata/empty":
+			assert.Equal(t, map[string][]string{"a": {"b"}}, item.Props)
+		case tests.RtRepo1 + "/testdata/empty/folder":
+			assert.Equal(t, map[string][]string{"c": {"d"}}, item.Props)
+		default:
+			assert.Fail(t, "Unexpected entry", item.Path)
 		}
 	}
 }
