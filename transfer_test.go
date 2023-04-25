@@ -29,6 +29,7 @@ import (
 	"github.com/jfrog/jfrog-client-go/utils"
 	"github.com/jfrog/jfrog-client-go/utils/io/fileutils"
 	"github.com/jfrog/jfrog-client-go/utils/io/httputils"
+	"github.com/jfrog/jfrog-client-go/utils/log"
 	clientTestUtils "github.com/jfrog/jfrog-client-go/utils/tests"
 	"github.com/stretchr/testify/assert"
 )
@@ -182,6 +183,12 @@ func TestTransferDirProperties(t *testing.T) {
 	defer cleanUp()
 
 	// Populate source Artifactory
+	entries, err := os.ReadDir("testdata")
+	assert.NoError(t, err)
+	for _, entry := range entries {
+		log.Info(entry.Name())
+	}
+
 	assert.NoError(t, artifactoryCli.Exec("upload", "testdata/empty/*", tests.RtRepo1, "--include-dirs"))
 	assert.NoError(t, artifactoryCli.Exec("sp", tests.RtRepo1+"/testdata/empty", "a=b", "--include-dirs"))
 	assert.NoError(t, artifactoryCli.Exec("sp", tests.RtRepo1+"/testdata/empty/folder", "c=d", "--include-dirs"))
