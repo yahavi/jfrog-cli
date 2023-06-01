@@ -117,7 +117,7 @@ jobs:
         run: source venv/bin/activate
 
       - name: Run tests
-        run: go test -v github.com/jfrog/jfrog-cli --timeout 0 --test.${{ matrix.suite }}=true --rt.url=${{ secrets.PLATFORM_URL }}artifactory --access.url=${{ secrets.PLATFORM_URL }}access --rt.distUrl=${{ secrets.PLATFORM_URL }}distribution --rt.user=${{ secrets.PLATFORM_USER }} --rt.accessToken=${{ secrets.PLATFORM_ADMIN_TOKEN }} --ci.runId=${{ runner.os }}-${{ matrix.suite }}
+        run: go test -v github.com/jfrog/jfrog-cli --timeout 0 --test.${{ matrix.suite }}=true --rt.url=${{ secrets.PLATFORM_URL }}/artifactory --access.url=${{ secrets.PLATFORM_URL }}/access --rt.distUrl=${{ secrets.PLATFORM_URL }}/distribution --rt.user=${{ secrets.PLATFORM_USER }} --rt.accessToken=${{ secrets.PLATFORM_ADMIN_TOKEN }} --ci.runId=${{ runner.os }}-${{ matrix.suite }}
 
   Docker-tests:
     if: contains(github.event.pull_request.labels.*.name, 'safe to test') || github.event_name == 'push'
@@ -142,4 +142,4 @@ jobs:
           restore-keys: ${{ runner.os }}-go-
 
       - name: Run Docker tests
-        run: go test -v -timeout 0 --test.docker=true --rt.url=${{ secrets.PLATFORM_URL }}artifactory --rt.accessToken=${{ secrets.PLATFORM_ADMIN_TOKEN }} --rt.dockerRepoDomain=ecosysjfrog-docker-virtual.jfrog.io --rt.dockerVirtualRepo=docker-virtual --rt.DockerLocalRepo=docker-local --rt.dockerRemoteRepo=docker-remote
+        run: go test -v -timeout 0 --test.docker=true --rt.url=${{ secrets.PLATFORM_URL }}/artifactory --rt.accessToken=${{ secrets.PLATFORM_ADMIN_TOKEN }} --rt.dockerRepoDomain=ecosysjfrog-docker-virtual.jfrog.io --rt.dockerVirtualRepo=docker-virtual --rt.DockerLocalRepo=docker-local --rt.dockerRemoteRepo=docker-remote
